@@ -42,7 +42,7 @@
 
 - **GPIO2 (SDA) 和 GPIO3 (SCL)**：用於 **I²C 通訊**，連接 **SSD1306 OLED 顯示器**。
 - **GPIO4**：連接 **DHT22 溫/濕度感測器** 的數據腳。
-- **按鈕_1、按鈕_2、按鈕_3、按鈕_4**，使用 **上拉電阻** 各自連接 10kΩ 電阻
+- **按鈕_1、按鈕_2、按鈕_3、按鈕_4**，使用 **上拉電阻** 個自連接 10kΩ 電阻
 - **LED** 連接 220Ω 電阻
 
 ### 麵包板線路圖：
@@ -56,10 +56,12 @@
 
 這樣接線會少很多，不用很多電阻、按鈕，而且內建就是上拉電阻喔～
 
-## 軟體安裝使用
+## 軟體安裝
+> 專案使用 Raspberry Pi OS (64-bit) 作業系統
 
-1. 安裝 GO，到官網：https://go.dev 下載 Go Linux-ARM64 版本
-- 例如：
+### 1. 安裝 GO，官網：https://go.dev 
+
+- 下載 Go Linux-ARM64 版本：
 
 ```
 wget https://go.dev/dl/go1.24.2.linux-arm64.tar.gz
@@ -96,22 +98,26 @@ go version
 > 顯示以下資訊，就是成功了～  
 > go version go1.24.2 linux/arm64
 
-2. 下載專案
+### 2. 下載專案
 
 ```
 git clone https://github.com/tiger586/raspi5-go-status.git
 ```
 
-3. 將 .env.example 改為 .env，並修改內容符合硬體接線
-4. 更新安裝 go 套件
+### 3. 將 .env.example 改為 .env，並修改內容符合硬體接線
 
 ```
 cd raspi5-go-status
 mv .env.example .env
+```
+
+### 4. 下載、更新 go 套件
+
+```
 go mod tidy
 ```
 
-## 接線完成後，執行測試
+### 5. 接線完成後，執行測試
 
 ```
 go run .
@@ -120,7 +126,7 @@ go run .
 CTRL+C 可以中斷程式，
 中斷、關機，程式都會優雅的關閉。
 
-## 編譯
+### 6. 編譯
 
 ```
 go build
@@ -128,7 +134,7 @@ go build
 
 預設編譯後檔名為 oled-status，需要編譯後才能設定為服務啟動。
 
-## 檔案說明
+### 檔案說明
 
 程式雖然不難，但是很雜，所以分開多個檔案，裡面沒有使用包，只是單純把程式碼打散
 
@@ -141,7 +147,7 @@ util.go   自用函數
 ```
 ✨ [LCDAssistant 下載](https://en.radzio.dxp.pl/bitmap_converter/) ✨
 
-## 放到系統服務，開機自動執行
+## 使用系統服務，開機自動執行
 
 oled-status.service 檔名隨意
 ```
@@ -178,37 +184,37 @@ Restart=on-failure
 WantedBy=multi-user.target
 ```
 
-檢查是否有錯誤
+### 檢查是否有錯誤
 
 ```
 sudo systemctl daemon-reload
 ```
 
-開機後自動執行
+### 開機後自動執行
 
 ```
 sudo systemctl enable oled-status.service
 ```
 
-立即執行
+### 立即執行
 
 ```
 sudo systemctl start oled-status.service
 ```
 
-重啟服務
+### 重啟服務
 
 ```
 sudo systemctl restart oled-status.service
 ```
 
-停止服務
+### 停止服務
 
 ```
 sudo systemctl stop oled-status.service
 ```
 
-取消開機執行
+### 取消開機執行
 
 ```
 sudo systemctl disable oled-status.service
