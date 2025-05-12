@@ -1,6 +1,6 @@
 module oled-status
 
-go 1.24.2
+go 1.24.3
 
 require (
 	github.com/MichaelS11/go-dht v0.1.1
